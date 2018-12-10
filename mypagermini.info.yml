@@ -1,0 +1,14 @@
+name: mypagermini
+type: module
+description: My pager mini.
+package: AAMID
+type: module
+core: 8.x
+version: 1.0
+dependencies:
+ - views
+
+
+
+
+

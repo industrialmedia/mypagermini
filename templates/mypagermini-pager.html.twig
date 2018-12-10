@@ -1,0 +1,48 @@
+<div class="mypagermini">
+
+
+  {% if pager_title %}
+    <div class="pager-title">
+      {{ pager_title }}
+    </div>
+  {% endif %}
+
+
+  {% if pager_subtitle %}
+    <div class="pager-subtitle">
+      {{ pager_subtitle }}
+    </div>
+  {% endif %}
+
+
+
+  {% if items.previous or items.next %}
+    <nav role="navigation" aria-labelledby="pagination-heading">
+      <ul class="js-pager__items">
+
+        {% if items.previous %}
+          <li class="prev">
+            <a href="{{ items.previous.href }}" title="{{ 'Go to previous page'|t }}"
+               {{ items.previous.attributes|without('href', 'title') }}>
+              <span class="visually-hidden">{{ 'Previous page'|t }}</span>
+              <span aria-hidden="true">{{ items.previous.text|default('‹‹'|t) }}</span>
+            </a>
+          </li>
+        {% endif %}
+
+        {% if items.next %}
+          <li class="next">
+            <a href="{{ items.next.href }}" title="{{ 'Go to next page'|t }}"
+               {{ items.next.attributes|without('href', 'title') }}>
+              <span class="visually-hidden">{{ 'Next page'|t }}</span>
+              <span aria-hidden="true">{{ items.next.text|default('››'|t) }}</span>
+            </a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </nav>
+  {% endif %}
+
+
+</div>
