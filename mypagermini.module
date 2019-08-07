@@ -5,18 +5,15 @@
  * Module file for mypagermini.
  */
 
-use Drupal\Core\Url;
 use Drupal\Core\Template\Attribute;
-use Drupal\mypagermini\Plugin\views\pager\Mypager;
 use Drupal\Core\Render\Markup;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_preprocess_mypagermini_pager().
  */
 function template_preprocess_mypagermini_pager(&$variables) {
-
   global $pager_page_array, $pager_total, $pager_total_items, $pager_limits;
-
   $tags = &$variables['tags'];
   $element = $variables['element'];
   $parameters = $variables['parameters'];
@@ -24,20 +21,18 @@ function template_preprocess_mypagermini_pager(&$variables) {
   // Current is the page we are currently paged to.
   $variables['items']['current'] = $pager_page_array[$element] + 1;
 
-
-
   if ($pager_total[$element] > 1 && $pager_page_array[$element] > 0) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] - 1),
     ];
-    $variables['items']['previous']['href'] = \Drupal::url('<current>', [], $options);
+    $variables['items']['previous']['href'] = Url::fromRoute('<current>', [], $options);
     if (isset($tags[1])) {
       $variables['items']['previous']['text'] = $tags[1];
     }
     $variables['items']['previous']['attributes'] = new Attribute();
   }
   else {
-    $variables['items']['previous']['href'] = \Drupal::url('<current>');
+    $variables['items']['previous']['href'] = Url::fromRoute('<current>');
     if (isset($tags[1])) {
       $variables['items']['previous']['text'] = $tags[1];
     }
@@ -50,21 +45,18 @@ function template_preprocess_mypagermini_pager(&$variables) {
   }
 
 
-
-
-
   if ($pager_page_array[$element] < ($pager_total[$element] - 1)) {
     $options = [
       'query' => pager_query_add_page($parameters, $element, $pager_page_array[$element] + 1),
     ];
-    $variables['items']['next']['href'] = \Drupal::url('<current>', [], $options);
+    $variables['items']['next']['href'] = Url::fromRoute('<current>', [], $options);
     if (isset($tags[3])) {
       $variables['items']['next']['text'] = $tags[3];
     }
     $variables['items']['next']['attributes'] = new Attribute();
   }
   else {
-    $variables['items']['next']['href'] = \Drupal::url('<current>');
+    $variables['items']['next']['href'] = Url::fromRoute('<current>');
     if (isset($tags[3])) {
       $variables['items']['next']['text'] = $tags[3];
     }
@@ -76,12 +68,10 @@ function template_preprocess_mypagermini_pager(&$variables) {
     $attributes->setAttribute('rel', 'nofollow');
   }
 
-  
 
   // This is based on the entire current query string. We need to ensure
   // cacheability is affected accordingly.
   $variables['#cache']['contexts'][] = 'url.query_args';
-
 
   $total_items = $pager_total_items[$element];
   $items_per_page = $pager_limits[$element];
@@ -108,8 +98,6 @@ function template_preprocess_mypagermini_pager(&$variables) {
     $pager_subtitle = str_replace(array_keys($search_replace), array_values($search_replace), $pager_subtitle);
     $variables['pager_subtitle'] = Markup::create($pager_subtitle);
   }
-
-
 
 }
 
