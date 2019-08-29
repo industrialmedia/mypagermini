@@ -77,12 +77,16 @@ class Mypagermini extends SqlBase {
         '#type' => 'textfield',
         '#title' => $this->t('Pager title'),
         '#default_value' => $options['pager_title'],
+        '#size' => 90,
+        '#maxlength' => 255,
         '#description' => 'Токены для замены: @total_items - общее кол-во элементов, @current_items - текущие кол-во элементов, @current - номер текущей страницы',
       ],
       'pager_subtitle' => [
         '#type' => 'textfield',
         '#title' => $this->t('Pager sub title'),
         '#default_value' => $options['pager_subtitle'],
+        '#size' => 90,
+        '#maxlength' => 255,
         '#description' => 'Токены для замены: @total_items - общее кол-во элементов, @current_items - текущие кол-во элементов, @current - номер текущей страницы',
       ],
       'nofollow' => [
