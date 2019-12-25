@@ -36,12 +36,11 @@ function template_preprocess_mypagermini_pager(&$variables) {
     if (isset($tags[1])) {
       $variables['items']['previous']['text'] = $tags[1];
     }
-    $variables['items']['previous']['attributes'] = new Attribute(['disabled' => TRUE, 'class' => ['disabled'], 'rel' => 'prev']);
-  }
-  if ($variables['options']['nofollow']) {
-    /* @var \Drupal\Core\Template\Attribute $attributes */
-    $attributes = $variables['items']['previous']['attributes'];
-    $attributes->setAttribute('rel', 'nofollow');
+    $variables['items']['previous']['attributes'] = new Attribute([
+      'disabled' => TRUE,
+      'class' => ['disabled'],
+      'rel' => 'prev'
+    ]);
   }
 
 
@@ -60,12 +59,49 @@ function template_preprocess_mypagermini_pager(&$variables) {
     if (isset($tags[3])) {
       $variables['items']['next']['text'] = $tags[3];
     }
-    $variables['items']['next']['attributes'] = new Attribute(['disabled' => TRUE, 'class' => ['disabled'], 'rel' => 'next']);
+    $variables['items']['next']['attributes'] = new Attribute([
+      'disabled' => TRUE,
+      'class' => ['disabled'],
+      'rel' => 'next'
+    ]);
   }
-  if ($variables['options']['nofollow']) {
+
+  // Add nofollow to links
+  if ($variables['options']['nofollow'] && !$variables['options']['is_not_link']) {
+    if ($variables['items']['previous']) {
+      /* @var \Drupal\Core\Template\Attribute $attributes */
+      $attributes = $variables['items']['previous']['attributes'];
+      $attributes->setAttribute('rel', 'nofollow');
+    }
+    if ($variables['items']['next']) {
+      /* @var \Drupal\Core\Template\Attribute $attributes */
+      $attributes = $variables['items']['next']['attributes'];
+      $attributes->setAttribute('rel', 'nofollow');
+    }
+  }
+
+  // Add class link (.link is required for is_not_link)
+  if ($variables['items']['previous']) {
+    /* @var \Drupal\Core\Template\Attribute $attributes */
+    $attributes = $variables['items']['previous']['attributes'];
+    $attributes->addClass('link');
+  }
+  if ($variables['items']['next']) {
     /* @var \Drupal\Core\Template\Attribute $attributes */
     $attributes = $variables['items']['next']['attributes'];
-    $attributes->setAttribute('rel', 'nofollow');
+    $attributes->addClass('link');
+  }
+
+  // html_tag
+  $html_tag = 'a';
+  if ($variables['options']['is_not_link']) {
+    $html_tag = 'div';
+  }
+  if ($variables['items']['previous']) {
+    $variables['items']['previous']['html_tag'] = $html_tag;
+  }
+  if ($variables['items']['next']) {
+    $variables['items']['next']['html_tag'] = $html_tag;
   }
 
 

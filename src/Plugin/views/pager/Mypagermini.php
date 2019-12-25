@@ -31,6 +31,9 @@ class Mypagermini extends SqlBase {
       '#element' => $this->options['id'],
       '#parameters' => $input,
     ];
+    if ($this->options['mypagermini']['is_not_link']) {
+      $build['mypagermini']['#attached']['library'][] = 'mypagermini/views-mypagermini';
+    }
     return $build;
   }
 
@@ -50,6 +53,9 @@ class Mypagermini extends SqlBase {
         ],
         'pager_subtitle' => [
           'default' => '@current_items / @total_items',
+        ],
+        'is_not_link' => [
+          'default' => FALSE,
         ],
         'nofollow' => [
           'default' => TRUE,
@@ -89,11 +95,22 @@ class Mypagermini extends SqlBase {
         '#maxlength' => 255,
         '#description' => 'Токены для замены: @total_items - общее кол-во элементов, @current_items - текущие кол-во элементов, @current - номер текущей страницы',
       ],
+      'is_not_link' => [
+        '#type' => 'checkbox',
+        '#title' => $this->t('Not links'),
+        '#default_value' => $options['is_not_link'],
+        '#description' => 'Вместо ссылок навигации будут div.link (обязательно нужно включить AJAX для этого представления)',
+      ],
       'nofollow' => [
         '#type' => 'checkbox',
         '#title' => $this->t('Nofollow'),
         '#default_value' => $options['nofollow'],
         '#description' => 'К ссылкам навигации будут добавлено - <em>rel="nofollow"</em>',
+        '#states' => [
+          'visible' => [
+            ':input[name="pager_options[mypagermini][is_not_link]"]' => ['checked' => FALSE],
+          ],
+        ],
       ],
     ];
   }

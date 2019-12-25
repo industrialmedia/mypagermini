@@ -1,0 +1,7 @@
+views-mypagermini:
+  version: VERSION
+  js:
+    js/mypagermini.js : {}
+  dependencies:
+    - core/jquery
+    - core/drupal
