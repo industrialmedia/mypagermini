@@ -21,6 +21,11 @@ function template_preprocess_mypagermini_pager(&$variables) {
   $tags = &$variables['tags'];
   $element = $variables['element'];
   $parameters = $variables['parameters'];
+  $total_items = $pager_total_items[$element];
+  $items_per_page = $pager_limits[$element];
+
+  $variables['attributes']['class'][] = 'mypagermini';
+  $variables['is_navigation_empty'] = FALSE;
 
   // Current is the page we are currently paged to.
   $variables['items']['current'] = $pager_page_array[$element] + 1;
@@ -34,8 +39,7 @@ function template_preprocess_mypagermini_pager(&$variables) {
       $variables['items']['previous']['text'] = $tags[1];
     }
     $variables['items']['previous']['attributes'] = new Attribute();
-  }
-  else {
+  } else {
     $variables['items']['previous']['href'] = Url::fromRoute('<current>');
     if (isset($tags[1])) {
       $variables['items']['previous']['text'] = $tags[1];
@@ -57,8 +61,7 @@ function template_preprocess_mypagermini_pager(&$variables) {
       $variables['items']['next']['text'] = $tags[3];
     }
     $variables['items']['next']['attributes'] = new Attribute();
-  }
-  else {
+  } else {
     $variables['items']['next']['href'] = Url::fromRoute('<current>');
     if (isset($tags[3])) {
       $variables['items']['next']['text'] = $tags[3];
@@ -69,6 +72,14 @@ function template_preprocess_mypagermini_pager(&$variables) {
       'rel' => 'next'
     ]);
   }
+
+  if ($total_items <= $items_per_page) {
+    $variables['items']['next'] = NULL;
+    $variables['items']['previous'] = NULL;
+    $variables['attributes']['class'][] = 'navigation-empty';
+    $variables['is_navigation_empty'] = TRUE;
+  }
+
 
   // Add nofollow to links
   if ($variables['options']['nofollow'] && !$variables['options']['is_not_link']) {
@@ -113,8 +124,7 @@ function template_preprocess_mypagermini_pager(&$variables) {
   // cacheability is affected accordingly.
   $variables['#cache']['contexts'][] = 'url.query_args';
 
-  $total_items = $pager_total_items[$element];
-  $items_per_page = $pager_limits[$element];
+
   $current = $pager_page_array[$element] + 1;
   $current_items = $current * $items_per_page;
   if ($current_items > $total_items) {
@@ -138,6 +148,7 @@ function template_preprocess_mypagermini_pager(&$variables) {
     $pager_subtitle = str_replace(array_keys($search_replace), array_values($search_replace), $pager_subtitle);
     $variables['pager_subtitle'] = Markup::create($pager_subtitle);
   }
+
 
 }
 

@@ -1,45 +1,49 @@
-<div class="mypagermini">
+{% if not is_navigation_empty %}
 
-  {% if pager_title %}
-    <div class="pager-title">
-      {{ pager_title }}
-    </div>
-  {% endif %}
+  <div {{ attributes }}>
 
-  {% if pager_subtitle %}
-    <div class="pager-subtitle">
-      {{ pager_subtitle }}
-    </div>
-  {% endif %}
+    {% if pager_title %}
+      <div class="pager-title">
+        {{ pager_title }}
+      </div>
+    {% endif %}
 
-
-  {% if items.previous or items.next %}
-    <nav role="navigation" aria-labelledby="pagination-heading">
-      <ul class="js-pager__items">
-
-        {% if items.previous %}
-          <li class="prev">
-          <{{ items.previous.html_tag }} href="{{ items.previous.href }}" title="{{ 'Go to previous page'|t }}"
-          {{ items.previous.attributes|without('href', 'title') }}>
-          <span class="visually-hidden">{{ 'Previous page'|t }}</span>
-          <span aria-hidden="true">{{ items.previous.text|default('‹‹'|t) }}</span>
-          </{{ items.previous.html_tag }}>
-          </li>
-        {% endif %}
-
-        {% if items.next %}
-          <li class="next">
-          <{{ items.next.html_tag }} href="{{ items.next.href }}" title="{{ 'Go to next page'|t }}"
-          {{ items.next.attributes|without('href', 'title') }}>
-          <span class="visually-hidden">{{ 'Next page'|t }}</span>
-          <span aria-hidden="true">{{ items.next.text|default('››'|t) }}</span>
-          </{{ items.next.html_tag }}>
-          </li>
-        {% endif %}
-
-      </ul>
-    </nav>
-  {% endif %}
+    {% if pager_subtitle %}
+      <div class="pager-subtitle">
+        {{ pager_subtitle }}
+      </div>
+    {% endif %}
 
 
-</div>
+    {% if items.previous or items.next %}
+      <nav role="navigation" aria-labelledby="pagination-heading">
+        <ul class="js-pager__items">
+
+          {% if items.previous %}
+            <li class="prev">
+            <{{ items.previous.html_tag }} href="{{ items.previous.href }}" title="{{ 'Go to previous page'|t }}"
+            {{ items.previous.attributes|without('href', 'title') }}>
+            <span class="visually-hidden">{{ 'Previous page'|t }}</span>
+            <span aria-hidden="true">{{ items.previous.text|default('‹‹'|t) }}</span>
+            </{{ items.previous.html_tag }}>
+            </li>
+          {% endif %}
+
+          {% if items.next %}
+            <li class="next">
+            <{{ items.next.html_tag }} href="{{ items.next.href }}" title="{{ 'Go to next page'|t }}"
+            {{ items.next.attributes|without('href', 'title') }}>
+            <span class="visually-hidden">{{ 'Next page'|t }}</span>
+            <span aria-hidden="true">{{ items.next.text|default('››'|t) }}</span>
+            </{{ items.next.html_tag }}>
+            </li>
+          {% endif %}
+
+        </ul>
+      </nav>
+    {% endif %}
+
+
+  </div>
+
+{% endif %}
